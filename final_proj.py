@@ -104,15 +104,23 @@ def scrape_shit():
     new_thing = page_soup.find(class_='pagination')
     new_thing = new_thing.find('a')['href']
     next_page_links_list.append(new_thing)
-    lit = '''
+
     while new_thing is not None:
         newy_url = truly_baseurl + str(new_thing)
         bleck = requests.get(newy_url).text
         more_bleh = BeautifulSoup(bleck, 'html.parser')
         shit = more_bleh.find(class_='pagination')
         tits = shit.find_all('li')
-        frack = shit
-    '''
+        for i in range(len(tits)):
+            dick = tits[i]
+            urethera = dick.find(class_='active')
+            if urethera is not None:
+                index = i + 1
+                maybe_it = tits[index]
+                linky = maybe_it.find('a')['href']
+                next_page_links_list.append(linky)
+        
+    lit = '''
     newy_url = truly_baseurl + str(new_thing)
     bleck = requests.get(newy_url).text
     more_bleh = BeautifulSoup(bleck, 'html.parser')
@@ -121,7 +129,7 @@ def scrape_shit():
     frack = frack.find_all('li')
     for row in frack:
         print(row)
-
+    '''
     # SERIOUSLY, LOOK AT THE ABOVE COMMENT LOL
 
     # thing = thing[0]
