@@ -8,14 +8,12 @@ import plotly
 import json
 
 DBNAME = 'final_project.db'
-# INFO : Name, Fight Name, Gender, Feet, Inches, Weight, Wins, Losses, Draws,
-# NCs, KOs, Subs, Decisions
+# INFO : Name, Fight Name, Age, Height, Weight, Record, KOs, Subs, Decisions
 CACHELISTS = 'final_project.csv'
 name_list = []
 fightname_list = []
-gender_list = []
-feet_list = []
-inches_list = []
+age_list = []
+height_list = []
 weight_list = []
 wins_list = []
 losses_list = []
@@ -48,11 +46,45 @@ def populate_db():
 
 def scrape_shit():
 
+    fighter_link_list = []
+    next_page_links_list = []
+
     # This is also gonna do the caching I think
     page_html = requests.get(baseurl).text
     page_soup = BeautifulSoup(page_html, 'html.parser')
 
-    
+    # class="fighter-info" then find <a href>
+
+    thing = page_soup.find_all(class_='fighter-info')
+    new_thing = page_soup.find(class_='pagination')
+    new_thing = new_thing.find('a')['href']
+
+    # thing = thing[0]
+    # thing = thing.find('a')['href']
+    # print(thing)
+
+    print(new_thing)
+
+    for fighter in thing:
+        fighter_link = fighter.find('a')['href']
+        fighter_link_list.append(fighter_link)
+
+
+    for link in fighter_link_list:
+        new_url = baseurl + str(link)
+        new_html = requests.get(new_url)
+        new_soup = BeautifulSoup(new_html, 'html.parser')
+        firstname = new_soup.find()
+        lastname = new_soup.find()
+        name = str(firstname) + ' ' + str(lastname)
+        fightname = new_soup.find(id_='fighter-nickname')
+        age = new_soup.find()
+        height = new_soup.find()
+        weight = new_soup.find()
+        record = new_soup.find()
+
+
 
     pass
 
+scrape_shit()
