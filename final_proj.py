@@ -78,6 +78,9 @@ def populate_db():
 
 def scrape_shit():
 
+    hacky_url = '/fighter/Weight_Class/filterFighters?offset='
+    hacky_part2 = '&max=20&sort=lastName&order=asc&weightClass=&fighterFilter=Current'
+
     name_list = []
     fightname_list = []
     age_list = []
@@ -88,9 +91,11 @@ def scrape_shit():
     legreach_list = []
     fighter_link_list = []
     dicc = {}
-    next_page_links_list = []
+    page_links_list = []
 
     # This is also gonna do the caching I think
+    page_links_list.append(baseurl)
+
     page_html = requests.get(baseurl).text
     page_soup = BeautifulSoup(page_html, 'html.parser')
 
@@ -103,13 +108,39 @@ def scrape_shit():
     thing = page_soup.find_all(class_='fighter-info')
     new_thing = page_soup.find(class_='pagination')
     new_thing = new_thing.find('a')['href']
-    next_page_links_list.append(new_thing)
-    counter = 2
+    page_links_list.append(new_thing)
+
+    damn = truly_baseurl + str(new_thing)
+    god_dammit = requests.get(damn).text
+    holy_fuck = BeautifulSoup(god_dammit, 'html.parser')
+    shit_tits = holy_fuck.find_all(class_='fighter-info')
+
+    for fighter in thing:
+        fighter_link = fighter.find('a')['href']
+        fighter_link_list.append(fighter_link)
+
+    for fighter in shit_tits:
+        fighter_link = fighter.find('a')['href']
+        fighter_link_list.append(fighter_link)
+
+    offset = 40
+
+    while offset <= 680:
+        whole_url = hacky_url + str(offset) + hacky_part2
+        truly_whole = truly_baseurl + whole_url
+        page_links_list.append(whole_url)
+        hacked = requests.get(truly_whole).text
+        hacked_soup = BeautifulSoup(hacked, 'html.parser')
+        getting_there = hacked_soup.find_all(class_='fighter-info')
+        for person in getting_there:
+            person_link = person.find('a')['href']
+            fighter_link_list.append(person_link)
+        offset += 20
 
     # NEED TO CHANGE THE OFFSET NUMBER IN THE URL EACH TIME
     # AUTOINCREMENT BY 20 UNTIL IT HITS LIKE 680 OR WHATEVER THE FINAL ONE IS
     # I'M A FUCKING HACKER LOLOLOLOL
-
+    cock = '''
     while counter < 36:
         newy_url = truly_baseurl + str(new_thing)
         bleck = requests.get(newy_url).text
@@ -120,7 +151,9 @@ def scrape_shit():
         new_thing = newish_thing.find('a')['href']
         next_page_links_list.append(new_thing)
         counter += 1
-    print(len(next_page_links_list))
+        '''
+    print(len(page_links_list))
+    print(len(fighter_link_list))
     lit = '''
     newy_url = truly_baseurl + str(new_thing)
     bleck = requests.get(newy_url).text
@@ -137,10 +170,6 @@ def scrape_shit():
     # thing = thing.find('a')['href']
     # print(thing)
     # print(new_thing)
-
-    for fighter in thing:
-        fighter_link = fighter.find('a')['href']
-        fighter_link_list.append(fighter_link)
 
     for link in fighter_link_list:
         new_url = truly_baseurl + str(link)
