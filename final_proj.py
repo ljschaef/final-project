@@ -104,22 +104,23 @@ def scrape_shit():
     new_thing = page_soup.find(class_='pagination')
     new_thing = new_thing.find('a')['href']
     next_page_links_list.append(new_thing)
+    counter = 2
 
-    while new_thing is not None:
+    # NEED TO CHANGE THE OFFSET NUMBER IN THE URL EACH TIME
+    # AUTOINCREMENT BY 20 UNTIL IT HITS LIKE 680 OR WHATEVER THE FINAL ONE IS
+    # I'M A FUCKING HACKER LOLOLOLOL
+
+    while counter < 36:
         newy_url = truly_baseurl + str(new_thing)
         bleck = requests.get(newy_url).text
         more_bleh = BeautifulSoup(bleck, 'html.parser')
         shit = more_bleh.find(class_='pagination')
         tits = shit.find_all('li')
-        for i in range(len(tits)):
-            dick = tits[i]
-            urethera = dick.find(class_='active')
-            if urethera is not None:
-                index = i + 1
-                maybe_it = tits[index]
-                linky = maybe_it.find('a')['href']
-                next_page_links_list.append(linky)
-        
+        newish_thing = tits[counter]
+        new_thing = newish_thing.find('a')['href']
+        next_page_links_list.append(new_thing)
+        counter += 1
+    print(len(next_page_links_list))
     lit = '''
     newy_url = truly_baseurl + str(new_thing)
     bleck = requests.get(newy_url).text
