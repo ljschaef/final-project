@@ -37,13 +37,13 @@ def create_db():
 
     statement = '''
         CREATE TABLE 'Fighters'(
-            'Name' TEXT PRIMARY KEY
-            'Fight Name' TEXT
-            'Age' INTEGER 
-            'Height' TEXT
-            'Weight' TEXT
-            'Record' TEXT
-            'Reach' TEXT
+            'Name' TEXT PRIMARY KEY,
+            'FightName' TEXT,
+            'Age' INTEGER,
+            'Height' TEXT,
+            'Weight' TEXT,
+            'Record' TEXT,
+            'Reach' TEXT,
             'Leg Reach' TEXT
         );
     '''
@@ -54,6 +54,7 @@ def create_db():
     conn.close()
 
     pass
+create_db()
 
 def populate_db():
 
@@ -90,6 +91,7 @@ def scrape_shit():
     reach_list = []
     legreach_list = []
     fighter_link_list = []
+    other_dicc = {}
     dicc = {}
     page_links_list = []
 
@@ -115,10 +117,12 @@ def scrape_shit():
     holy_fuck = BeautifulSoup(god_dammit, 'html.parser')
     shit_tits = holy_fuck.find_all(class_='fighter-info')
 
+    other_dicc[baseurl] = thing
     for fighter in thing:
         fighter_link = fighter.find('a')['href']
         fighter_link_list.append(fighter_link)
 
+    other_dicc[damn] = shit_tits
     for fighter in shit_tits:
         fighter_link = fighter.find('a')['href']
         fighter_link_list.append(fighter_link)
@@ -132,45 +136,14 @@ def scrape_shit():
         hacked = requests.get(truly_whole).text
         hacked_soup = BeautifulSoup(hacked, 'html.parser')
         getting_there = hacked_soup.find_all(class_='fighter-info')
+        other_dicc[whole_url] = getting_there
         for person in getting_there:
             person_link = person.find('a')['href']
             fighter_link_list.append(person_link)
         offset += 20
 
-    # NEED TO CHANGE THE OFFSET NUMBER IN THE URL EACH TIME
-    # AUTOINCREMENT BY 20 UNTIL IT HITS LIKE 680 OR WHATEVER THE FINAL ONE IS
-    # I'M A FUCKING HACKER LOLOLOLOL
-    cock = '''
-    while counter < 36:
-        newy_url = truly_baseurl + str(new_thing)
-        bleck = requests.get(newy_url).text
-        more_bleh = BeautifulSoup(bleck, 'html.parser')
-        shit = more_bleh.find(class_='pagination')
-        tits = shit.find_all('li')
-        newish_thing = tits[counter]
-        new_thing = newish_thing.find('a')['href']
-        next_page_links_list.append(new_thing)
-        counter += 1
-        '''
-    print(len(page_links_list))
-    print(len(fighter_link_list))
-    lit = '''
-    newy_url = truly_baseurl + str(new_thing)
-    bleck = requests.get(newy_url).text
-    more_bleh = BeautifulSoup(bleck, 'html.parser')
-    shit = more_bleh.find(class_='pagination')
-    frack = shit
-    frack = frack.find_all('li')
-    for row in frack:
-        print(row)
-    '''
-    # SERIOUSLY, LOOK AT THE ABOVE COMMENT LOL
-
-    # thing = thing[0]
-    # thing = thing.find('a')['href']
-    # print(thing)
-    # print(new_thing)
-
+    # print("Hit the big for loop")
+    # counter = 1
     for link in fighter_link_list:
         new_url = truly_baseurl + str(link)
         # print(new_url)
@@ -202,15 +175,28 @@ def scrape_shit():
         reach_list.append(reach)
         legreach_list.append(legreach)
         record_list.append(record)
+        # print(counter)
+        # counter += 1
         # '''
-    # print(len(name_list))
-    # print(len(fightname_list))
-    # print(len(age_list))
-    # print(len(height_list))
-    # print(len(weight_list))
-    # print(len(reach_list))
-    # print(len(legreach_list))
-    # print(len(record_list))
+
+    # This is where I will cache 'other_dicc' to a JSON file
+    with open(CACHEPAGES, 'w') as f:
+        json.dump(other_dicc, f)
+
+    # This is where I will cache all of the lists to a CSV file
+    first_line = ['Name', 'Fight Name', 'Age', 'Weight', 'Record', 'Reach',
+                  'Leg Reach']
+    with open(CACHELISTS, 'w') as f:
+        writer = csv.writer(f)
+        writer.writerow(first_line)
+
+    for i in range(len(name_list)):
+        with open(CACHELISTS, 'w', newline='') as f:
+            writer = csv.writer(f)
+            frack = [name_list[i], fightname_list[i], age_list[i],
+                     weight_list[i], record_list[i], reach_list[i],
+                     legreach_list[i]]
+            writer.writerow(frack)
 
     dicc['names'] = name_list
     dicc['fightnames'] = fightname_list
@@ -221,6 +207,8 @@ def scrape_shit():
     dicc['legreaches'] = legreach_list
     dicc['recors'] = record_list
 
+    # print("At the end but won't exit for some reason")
+
     return dicc
 
-scrape_shit()
+# scrape_shit()
