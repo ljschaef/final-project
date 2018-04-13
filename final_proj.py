@@ -139,71 +139,75 @@ def scrape_shit():
     holy_fuck = BeautifulSoup(god_dammit, 'html.parser')
     shit_tits = holy_fuck.find_all(class_='fighter-info')
 
-    other_dicc[baseurl] = thing
     for fighter in thing:
         fighter_link = fighter.find('a')['href']
         fighter_link_list.append(fighter_link)
 
-    other_dicc[damn] = shit_tits
-    for fighter in shit_tits:
-        fighter_link = fighter.find('a')['href']
-        fighter_link_list.append(fighter_link)
-
-    offset = 40
-
-    while offset <= 680:
-        whole_url = hacky_url + str(offset) + hacky_part2
-        truly_whole = truly_baseurl + whole_url
-        page_links_list.append(whole_url)
-        hacked = requests.get(truly_whole).text
-        hacked_soup = BeautifulSoup(hacked, 'html.parser')
-        getting_there = hacked_soup.find_all(class_='fighter-info')
-        other_dicc[whole_url] = getting_there
-        for person in getting_there:
-            person_link = person.find('a')['href']
-            fighter_link_list.append(person_link)
-        offset += 20
-
-    # print("Hit the big for loop")
-    # counter = 1
-    for link in fighter_link_list:
-        new_url = truly_baseurl + str(link)
-        # print(new_url)
-        # fuck = '''
-        new_html = requests.get(new_url).text
-        new_soup = BeautifulSoup(new_html, 'html.parser')
-        possibly_name = new_soup.find(class_='floatl current')
-        if possibly_name is not None:
-            name = possibly_name.text
-            name_list.append(name)
-            # print(name)
-        else:
-            possibly_name = new_soup.find(class_='floatl current contender-series')
-            name = possibly_name.text
-            name_list.append(name)
-            # print(name)
-
-        fightname = new_soup.find(id_='fighter-nickname')
-        age = new_soup.find(id_='fighter-age')
-        height = new_soup.find(id_='fighter-height')
-        weight = new_soup.find(id_='fighter-weight')
-        reach = new_soup.find(id_='fighter-reach')
-        legreach = new_soup.find(id_='fighter-leg-reach')
-        record = new_soup.find(id_='fighter-skill-record')
-        fightname_list.append(fightname)
-        age_list.append(age)
-        height_list.append(height)
-        weight_list.append(weight)
-        reach_list.append(reach)
-        legreach_list.append(legreach)
-        record_list.append(record)
-        # print(counter)
-        # counter += 1
-        # '''
+    other_dicc[baseurl] = fighter_link_list
+    #
+    # other_dicc[damn] = shit_tits
+    # for fighter in shit_tits:
+    #     fighter_link = fighter.find('a')['href']
+    #     fighter_link_list.append(fighter_link)
+    #
+    # offset = 40
+    #
+    # while offset <= 680:
+    #     whole_url = hacky_url + str(offset) + hacky_part2
+    #     truly_whole = truly_baseurl + whole_url
+    #     page_links_list.append(whole_url)
+    #     hacked = requests.get(truly_whole).text
+    #     hacked_soup = BeautifulSoup(hacked, 'html.parser')
+    #     getting_there = hacked_soup.find_all(class_='fighter-info')
+    #     other_dicc[whole_url] = getting_there
+    #     for person in getting_there:
+    #         person_link = person.find('a')['href']
+    #         fighter_link_list.append(person_link)
+    #     offset += 20
+    #
+    # # print("Hit the big for loop")
+    # # counter = 1
+    # for link in fighter_link_list:
+    #     new_url = truly_baseurl + str(link)
+    #     # print(new_url)
+    #     # fuck = '''
+    #     new_html = requests.get(new_url).text
+    #     new_soup = BeautifulSoup(new_html, 'html.parser')
+    #     possibly_name = new_soup.find(class_='floatl current')
+    #     if possibly_name is not None:
+    #         name = possibly_name.text
+    #         name_list.append(name)
+    #         # print(name)
+    #     else:
+    #         possibly_name = new_soup.find(class_='floatl current contender-series')
+    #         name = possibly_name.text
+    #         name_list.append(name)
+    #         # print(name)
+    #
+    #     fightname = new_soup.find(id_='fighter-nickname')
+    #     age = new_soup.find(id_='fighter-age')
+    #     height = new_soup.find(id_='fighter-height')
+    #     weight = new_soup.find(id_='fighter-weight')
+    #     reach = new_soup.find(id_='fighter-reach')
+    #     legreach = new_soup.find(id_='fighter-leg-reach')
+    #     record = new_soup.find(id_='fighter-skill-record')
+    #     fightname_list.append(fightname)
+    #     age_list.append(age)
+    #     height_list.append(height)
+    #     weight_list.append(weight)
+    #     reach_list.append(reach)
+    #     legreach_list.append(legreach)
+    #     record_list.append(record)
+    #     # print(counter)
+    #     # counter += 1
+    #     # '''
 
     # This is where I will cache 'other_dicc' to a JSON file
     with open(CACHEPAGES, 'w') as f:
-        json.dump(other_dicc, f)
+        # json.dump(other_dicc, f)
+        welp = json.dumps(other_dicc)
+        f.write(welp)
+        f.close()
 
     # This is where I will cache all of the lists to a CSV file
     first_line = ['Name', 'Fight Name', 'Age', 'Weight', 'Record', 'Reach',
@@ -211,9 +215,12 @@ def scrape_shit():
     with open(CACHELISTS, 'w') as f:
         writer = csv.writer(f)
         writer.writerow(first_line)
-
-    for i in range(len(name_list)):
-        with open(CACHELISTS, 'w', newline='') as f:
+        # Maybe try to put all of the lists into a dictionary with each person
+        # getting their own list Could then try to do write rows each one as an
+        # entry in the dict
+        # Or make a new list
+        # writer.writerows()
+        for i in range(len(name_list)):
             writer = csv.writer(f)
             frack = [name_list[i], fightname_list[i], age_list[i],
                      weight_list[i], record_list[i], reach_list[i],
@@ -233,7 +240,7 @@ def scrape_shit():
 
     return dicc
 
-# scrape_shit()
+scrape_shit()
 
 def interactive_part():
 
