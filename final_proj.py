@@ -22,6 +22,28 @@ url_and_html_dict = {}
 baseurl = 'http://www.ufc.com/fighter/Weight_Class'
 truly_baseurl = 'http://www.ufc.com'
 
+class Fighter():
+
+    def __init__(self, name, fight_name, age, height, weight, record, reach, leg_reach):
+        self.name = name
+        self.fightname = fight_name
+        self.age = age
+        self.height = height
+        self.weight = weight
+        self.record = record
+        self.reach = reach
+        self.legreach = leg_reach
+
+    def __str__(self):
+        statement = str(self.name) + ' is a ' + str(self.weight) + ' pound, ' + \
+                    str(self.height) + ' tall fighter known as ' + \
+                    str(self.fightname) + '. '
+        statement += str(self.fightname) + ' has a reach of ' + str(self.reach) \
+                     + ' and a leg reach of ' + str(self.legreach) + \
+                     ' and a record of ' + str(self.record) + ' (W-L-D).'
+
+        return statement
+
 def create_db():
 
     conn = sqlite3.connect(DBNAME)
@@ -54,7 +76,7 @@ def create_db():
     conn.close()
 
     pass
-create_db()
+# create_db()
 
 def populate_db():
 
@@ -212,3 +234,12 @@ def scrape_shit():
     return dicc
 
 # scrape_shit()
+
+def interactive_part():
+
+    # Lets you get info about fighter
+    # Maybe make a function that creates and returns a dict of fighters with the
+    # index being their name and the other being the instance
+    # Function would utilize cache to make instances n shit
+
+    pass
