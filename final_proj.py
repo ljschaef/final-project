@@ -247,7 +247,27 @@ def scrape_shit():
 
     return dicc
 
-scrape_shit()
+# scrape_shit()
+
+def utilize_cache():
+
+    # This is gonna check if the csv is filled to 685 rows (header row is included)
+    # and if it is will access cache and create instances of fighters
+    # If not it will run scrape_shit() and then create the instances once csv is filled
+
+    pass
+
+def make_distribution():
+
+    # this will make distribution graphs
+
+    pass
+
+def make_individual():
+
+    # this will make individual graphs
+
+    pass
 
 def interactive_part():
 
@@ -256,4 +276,24 @@ def interactive_part():
     # index being their name and the other being the instance
     # Function would utilize cache to make instances n shit
 
-    pass
+    # 3 things here
+    # 1: See some distribution graphs (height, reach, weight)
+    # 2: Learn about a specific fighter (either input a valid name or get a random one)
+    # 3: Then can see visuals for fighter (record, reach vs. leg reach) or go back to initial page
+
+    statement = 'Would you like to see some distribution graphs (input ' \
+                '"Distribution"), see info for a specific fighter (input valid ' \
+                'name), or see info for a random fighter (input "Rando")?'
+    user = input(statement)
+
+    if user == 'Distribution':
+
+        pass
+
+    elif user == 'Rando':
+
+        pass
+
+    else:
+
+        pass
