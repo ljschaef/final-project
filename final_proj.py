@@ -191,13 +191,42 @@ def scrape_shit():
             name_list.append(name)
             # print(name)
 
-        fightname = new_soup.find(id_='fighter-nickname')
-        age = new_soup.find(id_='fighter-age')
-        height = new_soup.find(id_='fighter-height')
-        weight = new_soup.find(id_='fighter-weight')
-        reach = new_soup.find(id_='fighter-reach')
-        legreach = new_soup.find(id_='fighter-leg-reach')
-        record = new_soup.find(id_='fighter-skill-record')
+        fightname = new_soup.find(id='fighter-nickname')
+        if fightname is not None:
+            fightname = fightname.text
+        else:
+            fightname = 'N/A'
+        age = new_soup.find(id='fighter-age')
+        if age is not None:
+            age = age.text
+        else:
+            age = 'N/A'
+        height = new_soup.find(id='fighter-height')
+        if height is not None:
+            height = height.text
+        else:
+            height = 'N/A'
+        weight = new_soup.find(id='fighter-weight')
+        if weight is not None:
+            weight = weight.text
+        else:
+            weight = 'N/A'
+        reach = new_soup.find(id='fighter-reach')
+        if reach is not None:
+            reach = reach.text
+        else:
+            reach = 'N/A'
+        legreach = new_soup.find(id='fighter-leg-reach')
+        if legreach is not None:
+            legreach = legreach.text
+        else:
+            legreach = 'N/A'
+        record = new_soup.find(id='fighter-skill-record')
+        if record is not None:
+            record = record.text
+        else:
+            record = 'N/A'
+
         fightname_list.append(fightname)
         age_list.append(age)
         height_list.append(height)
@@ -222,17 +251,31 @@ def scrape_shit():
     with open(CACHELISTS, 'w') as f:
         writer = csv.writer(f)
         writer.writerow(first_line)
+        # print(first_line)
         # Maybe try to put all of the lists into a dictionary with each person
         # getting their own list Could then try to do write rows each one as an
         # entry in the dict
         # Or make a new list
         # writer.writerows()
+        fuck = []
         for i in range(len(name_list)):
-            writer = csv.writer(f)
+            # writer = csv.writer(f)
             frack = [name_list[i], fightname_list[i], age_list[i],
                      weight_list[i], record_list[i], reach_list[i],
                      legreach_list[i]]
-            writer.writerow(frack)
+            fuck.append(frack)
+        writer.writerows(fuck)
+        # for row in fuck:
+        #     print(row)
+
+    # print(len(fightname_list))
+    # print(fightname_list)
+    # print(len(age_list))
+    # print(len(height_list))
+    # print(len(weight_list))
+    # print(len(reach_list))
+    # print(len(legreach_list))
+    # print(len(record_list))
 
     dicc['names'] = name_list
     dicc['fightnames'] = fightname_list
@@ -241,19 +284,27 @@ def scrape_shit():
     dicc['weights'] = weight_list
     dicc['reaches'] = reach_list
     dicc['legreaches'] = legreach_list
-    dicc['recors'] = record_list
+    dicc['record'] = record_list
 
     # print("At the end but won't exit for some reason")
 
     return dicc
 
-# scrape_shit()
+scrape_shit()
 
 def utilize_cache():
 
     # This is gonna check if the csv is filled to 685 rows (header row is included)
     # and if it is will access cache and create instances of fighters
     # If not it will run scrape_shit() and then create the instances once csv is filled
+
+    with open(CACHELISTS) as f:
+        thing = csv.reader(f)
+
+    if thing is not None:
+        for row in thing:
+            name = row[0]
+
 
     pass
 
