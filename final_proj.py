@@ -221,9 +221,13 @@ def scrape_shit():
             legreach = legreach.text
         else:
             legreach = 'N/A'
-        record = new_soup.find(id='fighter-skill-record')
+        record = new_soup.find(class_='fighter-record')
         if record is not None:
             record = record.text
+            length = len(record)
+            length -= 9
+            record = record[0:length]
+
         else:
             record = 'N/A'
 
