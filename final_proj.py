@@ -24,7 +24,8 @@ truly_baseurl = 'http://www.ufc.com'
 
 class Fighter():
 
-    def __init__(self, name, fight_name, age, height, weight, record, reach, leg_reach):
+    def __init__(self, name=None, fight_name=None, age=None, height=None,
+                 weight=None, record=None, reach=None, leg_reach=None):
         self.name = name
         self.fightname = fight_name
         self.age = age
@@ -39,8 +40,8 @@ class Fighter():
                     str(self.height) + ' tall fighter known as ' + \
                     str(self.fightname) + '. '
         statement += str(self.fightname) + ' has a reach of ' + str(self.reach) \
-                     + ' and a leg reach of ' + str(self.legreach) + \
-                     ' and a record of ' + str(self.record) + ' (W-L-D).'
+                     + ' inches and a leg reach of ' + str(self.legreach) + \
+                     ' inches and a record of ' + str(self.record) + ' (W-L-D).'
 
         return statement
 
@@ -59,14 +60,14 @@ def create_db():
 
     statement = '''
         CREATE TABLE 'Fighters'(
-            'Name' TEXT PRIMARY KEY,
+            'Name' TEXT,
             'FightName' TEXT,
             'Age' INTEGER,
             'Height' TEXT,
-            'Weight' TEXT,
+            'Weight' INTEGER,
             'Record' TEXT,
-            'Reach' TEXT,
-            'Leg Reach' TEXT
+            'Reach' INTEGER,
+            'Leg Reach' INTEGER
         );
     '''
 
@@ -76,7 +77,8 @@ def create_db():
     conn.close()
 
     pass
-# create_db()
+
+create_db()
 
 def populate_db():
 
@@ -96,8 +98,12 @@ def populate_db():
                 statement += 'VALUES (?, ?, ?, ?, ?, ?, ?, ?)'
                 cur.execute(statement, insertion)
 
+    conn.commit()
+    conn.close()
 
     pass
+
+populate_db()
 
 def scrape_shit():
 
@@ -204,21 +210,33 @@ def scrape_shit():
         height = new_soup.find(id='fighter-height')
         if height is not None:
             height = height.text
+            length = len(height)
+            length -= 11
+            height = height[0:length]
         else:
             height = 'N/A'
         weight = new_soup.find(id='fighter-weight')
         if weight is not None:
             weight = weight.text
+            length = len(weight)
+            length -= 13
+            weight = weight[0:length]
         else:
             weight = 'N/A'
         reach = new_soup.find(id='fighter-reach')
         if reach is not None:
             reach = reach.text
+            length = len(reach)
+            length -= 1
+            reach = reach[0:length]
         else:
             reach = 'N/A'
         legreach = new_soup.find(id='fighter-leg-reach')
         if legreach is not None:
             legreach = legreach.text
+            length = len(legreach)
+            length -= 1
+            legreach = legreach[0:length]
         else:
             legreach = 'N/A'
         record = new_soup.find(class_='fighter-record')
@@ -250,7 +268,7 @@ def scrape_shit():
         f.close()
 
     # This is where I will cache all of the lists to a CSV file
-    first_line = ['Name', 'Fight Name', 'Age', 'Weight', 'Record', 'Reach',
+    first_line = ['Name', 'Fight Name', 'Age', 'Height', 'Weight', 'Record', 'Reach',
                   'Leg Reach']
     with open(CACHELISTS, 'w') as f:
         writer = csv.writer(f)
@@ -265,7 +283,7 @@ def scrape_shit():
         for i in range(len(name_list)):
             # writer = csv.writer(f)
             frack = [name_list[i], fightname_list[i], age_list[i],
-                     weight_list[i], record_list[i], reach_list[i],
+                     height_list[i], weight_list[i], record_list[i], reach_list[i],
                      legreach_list[i]]
             fuck.append(frack)
         writer.writerows(fuck)
@@ -294,21 +312,11 @@ def scrape_shit():
 
     return dicc
 
-scrape_shit()
+# scrape_shit()
 
-def utilize_cache():
+def utilize_db():
 
-    # This is gonna check if the csv is filled to 685 rows (header row is included)
-    # and if it is will access cache and create instances of fighters
-    # If not it will run scrape_shit() and then create the instances once csv is filled
-
-    with open(CACHELISTS) as f:
-        thing = csv.reader(f)
-
-    if thing is not None:
-        for row in thing:
-            name = row[0]
-
+    # go through the database to make instances of Fighter class
 
     pass
 
