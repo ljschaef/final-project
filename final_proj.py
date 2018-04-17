@@ -36,12 +36,19 @@ class Fighter():
         self.legreach = leg_reach
 
     def __str__(self):
-        statement = str(self.name) + ' is a ' + str(self.weight) + ' pound, ' + \
+        if self.fightname != 'N/A:'
+            statement = str(self.name) + ' is a ' + str(self.weight) + ' pound, ' + \
                     str(self.height) + ' tall fighter known as ' + \
                     str(self.fightname) + '. '
-        statement += str(self.fightname) + ' has a reach of ' + str(self.reach) \
+            statement += str(self.fightname) + ' has a reach of ' + str(self.reach) \
                      + ' inches and a leg reach of ' + str(self.legreach) + \
                      ' inches and a record of ' + str(self.record) + ' (W-L-D).'
+        else:
+            statement = str(self.name) + ' is a ' + str(self.weight) + ' pound, ' + \
+                        str(self.height) + ' tall fighter. '
+            statement += str(self.name) + ' has a reach of ' + str(self.reach) \
+                         + ' inches, a leg reach of ' + str(self.legreach) + \
+                         ' inches, and a record of ' + str(self.record) + ' (W-L-D).'
 
         return statement
 
@@ -78,7 +85,7 @@ def create_db():
 
     pass
 
-create_db()
+# create_db()
 
 def populate_db():
 
@@ -103,7 +110,7 @@ def populate_db():
 
     pass
 
-populate_db()
+# populate_db()
 
 def scrape_shit():
 
@@ -318,7 +325,55 @@ def utilize_db():
 
     # go through the database to make instances of Fighter class
 
-    pass
+    conn = sqlite3.connect(DBNAME)
+    cur = conn.cursor()
+
+    statement = '''
+        SELECT *
+        FROM Fighters
+    '''
+
+    cur.execute(statement)
+
+    name_list = []
+    fightname_list = []
+    age_list = []
+    height_list = []
+    weight_list = []
+    record_list = []
+    reach_list = []
+    legreach_list = []
+
+    for row in cur:
+        name_list.append(row[0])
+        fightname_list.append(row[1])
+        age_list.append(row[2])
+        height_list.append(row[3])
+        weight_list.append(row[4])
+        record_list.append(row[5])
+        reach_list.append(row[6])
+        legreach_list.append(row[7])
+
+    fighter_dict = {}
+
+    for i in range(len(name_list)):
+        fighter = Fighter()
+        fighter.name = name_list[i]
+        fighter.fightname = fightname_list[i]
+        fighter.age = age_list[i]
+        fighter.height = height_list[i]
+        fighter.weight = weight_list[i]
+        fighter.record = record_list[i]
+        fighter.reach = reach_list[i]
+        fighter.legreach = legreach_list[i]
+        fighter_dict[fighter.name] = fighter
+
+    print(len(fighter_dict))
+    print(fighter_dict['Jose Aldo'])
+
+    return fighter_dict
+
+utilize_db()
 
 def make_distribution():
 
