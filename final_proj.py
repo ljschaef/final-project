@@ -512,9 +512,37 @@ def make_distribution(dicc, command):
 # dicc = utilize_db()
 # make_distribution(dicc, 'reach')
 
-def make_individual(dict, name):
+def make_individual(dicc, name):
 
     # this will make individual graphs
+    fighter = dicc[name]
+    record = fighter.record
+
+    wins = 0
+    losses = 0
+    draws = 0
+    tits = 0
+    if record[1] == '-':
+        wins = int(record[0])
+        if record[3] == '-':
+            losses = int(record[2])
+            draws = int(record[4])
+        else:
+            losses = int(record[2:4])
+            draws = int(record[5])
+    elif record[2] == '-':
+        wins = record[0:2]
+
+    else:
+        tits = 1
+
+    if tits == 0:
+        # This is where we make the plotly graph
+
+    else:
+        statement = 'No graph can be made because this fighter\'s record isn\'t ' \
+                    'available'
+        print(statement)
 
     pass
 
