@@ -36,7 +36,7 @@ class Fighter():
         self.legreach = leg_reach
 
     def __str__(self):
-        if self.fightname != 'N/A:'
+        if self.fightname != 'N/A':
             statement = str(self.name) + ' is a ' + str(self.weight) + ' pound, ' + \
                     str(self.height) + ' tall fighter known as ' + \
                     str(self.fightname) + '. '
@@ -368,20 +368,49 @@ def utilize_db():
         fighter.legreach = legreach_list[i]
         fighter_dict[fighter.name] = fighter
 
-    print(len(fighter_dict))
-    print(fighter_dict['Jose Aldo'])
+    # print(len(fighter_dict))
+    # print(fighter_dict['Jose Aldo'])
 
     return fighter_dict
 
-utilize_db()
+# utilize_db()
 
-def make_distribution():
+def make_distribution(dicc):
 
     # this will make distribution graphs
 
+    # This will pull ages, heights, weights, and reaches
+    age_list = []
+    height_list = []
+    weight_list = []
+    reach_list = []
+
+    for a in dicc:
+        b = dicc[a]
+        # print(b)
+        age = b.age
+        height = b.height
+        weight = b.weight
+        reach = b.reach
+        age_list.append(age)
+        height_list.append(height)
+        weight_list.append(weight)
+        reach_list.append(reach)
+
+    # print(len(age_list))
+    # print(len(height_list))
+    # print(len(weight_list))
+    # print(len(reach_list))
+
+    # TIME TO USE PLOTLY FUCK MY ASS
+    
+
     pass
 
-def make_individual():
+dicc = utilize_db()
+make_distribution(dicc)
+
+def make_individual(dict, name):
 
     # this will make individual graphs
 
