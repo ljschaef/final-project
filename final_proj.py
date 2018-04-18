@@ -389,21 +389,95 @@ def make_distribution(dicc):
         b = dicc[a]
         # print(b)
         age = b.age
-        height = b.height
         weight = b.weight
         reach = b.reach
         age_list.append(age)
-        height_list.append(height)
         weight_list.append(weight)
         reach_list.append(reach)
 
     # print(len(age_list))
-    # print(len(height_list))
     # print(len(weight_list))
     # print(len(reach_list))
 
     # TIME TO USE PLOTLY FUCK MY ASS
-    
+    age1 = 0
+    age2 = 0
+    age3 = 0
+    age4 = 0
+    age5 = 0
+    age6 = 0
+    for i in range(len(age_list)):
+        da_age = age_list[i]
+        if 20<= da_age <= 25:
+            age1 += 1
+        elif 26 <= da_age <= 30:
+            age2 += 1
+        elif 31 <= da_age <= 35:
+            age3 += 1
+        elif 36 <= da_age <= 40:
+            age4 += 1
+        elif 41 <= da_age <= 44:
+            age5 += 1
+        else:
+            age6 += 1
+
+    weight1 = 0
+    weight2 = 0
+    weight3 = 0
+    weight4 = 0
+    weight5 = 0
+    weight6 = 0
+    weight7 = 0
+    weight8 = 0
+    weight9 = 0
+    weight10 = 0
+
+    for i in range(len(weight_list)):
+        da_weight = weight_list[i]
+        if da_weight == 115:
+            weight1 += 1
+        elif da_weight == 125:
+            weight2 += 1
+        elif da_weight == 135:
+            weight3 += 1
+        elif da_weight == 145:
+            weight4 += 1
+        elif da_weight == 155:
+            weight5 += 1
+        elif da_weight == 170:
+            weight6 += 1
+        elif da_weight == 185:
+            weight7 += 1
+        elif da_weight == 205:
+            weight8 += 1
+        elif 206 <= da_weight <= 265:
+            weight9 += 1
+        else:
+            weight10 += 1
+
+    reach1 = 0
+    reach2 = 0
+    reach3 = 0
+    reach4 = 0
+    reach5 = 0
+    reach6 = 0
+
+    for i in range(len(reach_list)):
+        da_reach = reach_list[i]
+        if 60 <= da_reach <= 65:
+            reach1 += 1
+        elif 66 <= da_reach <= 70:
+            reach2 += 1
+        elif 71 <= da_reach <= 75:
+            reach3 += 1
+        elif 76 <= da_reach <= 80:
+            reach4 += 1
+        elif 81 <= da_reach <= 84:
+            reach5 += 1
+        else:
+            reach6 += 1
+
+    # Now it's time to actually make the graphs
 
     pass
 
