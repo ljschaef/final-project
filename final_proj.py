@@ -4,7 +4,8 @@
 import requests
 import sqlite3
 from bs4 import BeautifulSoup
-import plotly
+import plotly.plotly as py
+import plotly.graph_objs as go
 import json
 import csv
 
@@ -375,7 +376,7 @@ def utilize_db():
 
 # utilize_db()
 
-def make_distribution(dicc):
+def make_distribution(dicc, command):
 
     # this will make distribution graphs
 
@@ -408,16 +409,18 @@ def make_distribution(dicc):
     age6 = 0
     for i in range(len(age_list)):
         da_age = age_list[i]
-        if 20<= da_age <= 25:
-            age1 += 1
-        elif 26 <= da_age <= 30:
-            age2 += 1
-        elif 31 <= da_age <= 35:
-            age3 += 1
-        elif 36 <= da_age <= 40:
-            age4 += 1
-        elif 41 <= da_age <= 44:
-            age5 += 1
+        if da_age != 'N/A':
+            da_age = int(da_age)
+            if 20 <= da_age <= 25:
+                age1 += 1
+            elif 26 <= da_age <= 30:
+                age2 += 1
+            elif 31 <= da_age <= 35:
+                age3 += 1
+            elif 36 <= da_age <= 40:
+                age4 += 1
+            else:
+                age5 += 1
         else:
             age6 += 1
 
@@ -434,24 +437,25 @@ def make_distribution(dicc):
 
     for i in range(len(weight_list)):
         da_weight = weight_list[i]
-        if da_weight == 115:
-            weight1 += 1
-        elif da_weight == 125:
-            weight2 += 1
-        elif da_weight == 135:
-            weight3 += 1
-        elif da_weight == 145:
-            weight4 += 1
-        elif da_weight == 155:
-            weight5 += 1
-        elif da_weight == 170:
-            weight6 += 1
-        elif da_weight == 185:
-            weight7 += 1
-        elif da_weight == 205:
-            weight8 += 1
-        elif 206 <= da_weight <= 265:
-            weight9 += 1
+        if da_weight != 'N/A':
+            if da_weight == 115:
+                weight1 += 1
+            elif da_weight == 125:
+                weight2 += 1
+            elif da_weight == 135:
+                weight3 += 1
+            elif da_weight == 145:
+                weight4 += 1
+            elif da_weight == 155:
+                weight5 += 1
+            elif da_weight == 170:
+                weight6 += 1
+            elif da_weight == 185:
+                weight7 += 1
+            elif da_weight == 205:
+                weight8 += 1
+            else:
+                weight9 += 1
         else:
             weight10 += 1
 
@@ -464,25 +468,49 @@ def make_distribution(dicc):
 
     for i in range(len(reach_list)):
         da_reach = reach_list[i]
-        if 60 <= da_reach <= 65:
-            reach1 += 1
-        elif 66 <= da_reach <= 70:
-            reach2 += 1
-        elif 71 <= da_reach <= 75:
-            reach3 += 1
-        elif 76 <= da_reach <= 80:
-            reach4 += 1
-        elif 81 <= da_reach <= 84:
-            reach5 += 1
+        if da_reach != 'N/A':
+            if 60 <= da_reach <= 65:
+                reach1 += 1
+            elif 66 <= da_reach <= 70:
+                reach2 += 1
+            elif 71 <= da_reach <= 75:
+                reach3 += 1
+            elif 76 <= da_reach <= 80:
+                reach4 += 1
+            else:
+                reach5 += 1
         else:
             reach6 += 1
 
     # Now it's time to actually make the graphs
 
+    if command == 'age':
+        age_data = [go.Bar(
+                    x=['20-25', '26-30', '31-35', '36-40', '41-44', 'N/A'],
+                    y=[age1, age2, age3, age4, age5, age6]
+        )]
+        py.plot(age_data, filename='Age-Range-of-Fighters')
+
+    elif command == 'weight':
+        weight_data = [go.Bar(
+                        x=['115', '125', '135', '145', '155', '170', '185', '205',
+                           '206-265', 'N/A'],
+                        y=[weight1, weight2, weight3, weight4, weight5, weight6,
+                           weight7, weight8, weight9, weight10]
+        )]
+        py.plot(weight_data, filename='Weight-Range-of-Fighters')
+
+    else:
+        reach_data = [go.Bar(
+                        x=['60-65', '66-70', '71-75', '76-80', '81-84', 'N/A'],
+                        y=[reach1, reach2, reach3, reach4, reach5, reach6]
+        )]
+        py.plot(reach_data, filename='Reach-Range-of-Fighters')
+
     pass
 
-dicc = utilize_db()
-make_distribution(dicc)
+# dicc = utilize_db()
+# make_distribution(dicc, 'reach')
 
 def make_individual(dict, name):
 
