@@ -532,12 +532,21 @@ def make_individual(dicc, name):
             draws = int(record[5])
     elif record[2] == '-':
         wins = record[0:2]
-
+        if record[4] == '-':
+            losses = int(record[3])
+            draws = int(record[5])
+        else:
+            losses = int(record[3:5])
+            draws = int(record[6])
     else:
         tits = 1
 
     if tits == 0:
         # This is where we make the plotly graph
+        labels = ['Wins', 'Losses', 'Draws']
+        values = [wins, losses, draws]
+        trace = go.Pie(labels=labels, values=values)
+        py.plot([trace], filename='Record')
 
     else:
         statement = 'No graph can be made because this fighter\'s record isn\'t ' \
@@ -545,6 +554,9 @@ def make_individual(dicc, name):
         print(statement)
 
     pass
+
+dicc = utilize_db()
+make_individual(dicc, 'Jose Aldo')
 
 def interactive_part():
 
