@@ -543,10 +543,13 @@ def make_individual(dicc, name):
 
     if tits == 0:
         # This is where we make the plotly graph
+
+        # THIS NEEDS TO DISPLAY THE VALUE
         labels = ['Wins', 'Losses', 'Draws']
         values = [wins, losses, draws]
         trace = go.Pie(labels=labels, values=values)
         py.plot([trace], filename='Record')
+        # CHECK THE ABOVE COMMENT PLEASE
 
     else:
         statement = 'No graph can be made because this fighter\'s record isn\'t ' \
