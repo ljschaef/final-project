@@ -8,7 +8,6 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import json
 import csv
-import random
 
 DBNAME = 'final_project.db'
 # INFO : Name, Fight Name, Age, Height, Weight, Record, Reach, Leg Reach
@@ -132,17 +131,10 @@ def scrape_shit():
     dicc = {}
     page_links_list = []
 
-    # This is also gonna do the caching I think
     page_links_list.append(baseurl)
 
     page_html = requests.get(baseurl).text
     page_soup = BeautifulSoup(page_html, 'html.parser')
-
-    # class="fighter-info" then find <a href>
-
-    # Need to do a thing here that goes to the next page and gets all the
-    # fighters there. Does this throughout all the pages. Then I can go ahead
-    # and do the rest of the stuff
 
     thing = page_soup.find_all(class_='fighter-info')
     new_thing = page_soup.find(class_='pagination')
@@ -186,13 +178,10 @@ def scrape_shit():
         other_dicc[str(whole_url)] = newest_list
         offset += 20
 
-    # print("Hit the big for loop")
-    # counter = 1
     for link in fighter_link_list:
 
         new_url = truly_baseurl + str(link)
         # print(new_url)
-        # fuck = '''
         new_html = requests.get(new_url).text
         new_soup = BeautifulSoup(new_html, 'html.parser')
         possibly_name = new_soup.find(class_='floatl current')
@@ -265,39 +254,24 @@ def scrape_shit():
         reach_list.append(reach)
         legreach_list.append(legreach)
         record_list.append(record)
-        # print(counter)
-        # counter += 1
-        # '''
 
-    # This is where I will cache 'other_dicc' to a JSON file
     with open(CACHEPAGES, 'w') as f:
-        # json.dump(other_dicc, f)
         welp = json.dumps(other_dicc)
         f.write(welp)
         f.close()
 
-    # This is where I will cache all of the lists to a CSV file
     first_line = ['Name', 'Fight Name', 'Age', 'Height', 'Weight', 'Record', 'Reach',
                   'Leg Reach']
     with open(CACHELISTS, 'w') as f:
         writer = csv.writer(f)
         writer.writerow(first_line)
-        # print(first_line)
-        # Maybe try to put all of the lists into a dictionary with each person
-        # getting their own list Could then try to do write rows each one as an
-        # entry in the dict
-        # Or make a new list
-        # writer.writerows()
         fuck = []
         for i in range(len(name_list)):
-            # writer = csv.writer(f)
             frack = [name_list[i], fightname_list[i], age_list[i],
                      height_list[i], weight_list[i], record_list[i], reach_list[i],
                      legreach_list[i]]
             fuck.append(frack)
         writer.writerows(fuck)
-        # for row in fuck:
-        #     print(row)
 
     # print(len(fightname_list))
     # print(fightname_list)
@@ -317,15 +291,11 @@ def scrape_shit():
     dicc['legreaches'] = legreach_list
     dicc['record'] = record_list
 
-    # print("At the end but won't exit for some reason")
-
     return dicc
 
 # scrape_shit()
 
 def utilize_db():
-
-    # go through the database to make instances of Fighter class
 
     conn = sqlite3.connect(DBNAME)
     cur = conn.cursor()
@@ -379,11 +349,7 @@ def utilize_db():
 
 def make_distribution(dicc, command):
 
-    # this will make distribution graphs
-
-    # This will pull ages, heights, weights, and reaches
     age_list = []
-    height_list = []
     weight_list = []
     reach_list = []
 
@@ -401,7 +367,6 @@ def make_distribution(dicc, command):
     # print(len(weight_list))
     # print(len(reach_list))
 
-    # TIME TO USE PLOTLY FUCK MY ASS
     age1 = 0
     age2 = 0
     age3 = 0
@@ -483,8 +448,6 @@ def make_distribution(dicc, command):
         else:
             reach6 += 1
 
-    # Now it's time to actually make the graphs
-
     if command == 'age':
         age_data = [go.Bar(
                     x=['20-25', '26-30', '31-35', '36-40', '41-44', 'N/A'],
@@ -547,12 +510,10 @@ def make_individual(dicc, name):
     if tits == 0:
         # This is where we make the plotly graph
 
-        # THIS NEEDS TO DISPLAY THE VALUE
         labels = ['Wins', 'Losses', 'Draws']
         values = [wins, losses, draws]
-        trace = go.Pie(labels=labels, values=values)
+        trace = go.Pie(labels=labels, values=values, hoverinfo='label+percent', textinfo='value')
         py.plot([trace], filename='Record')
-        # CHECK THE ABOVE COMMENT PLEASE
 
     else:
         statement = 'No graph can be made because this fighter\'s record isn\'t ' \
@@ -565,11 +526,6 @@ def make_individual(dicc, name):
 # make_individual(dicc, 'Jose Aldo')
 
 def interactive_part():
-
-    # 3 things here
-    # 1: See some distribution graphs (height, reach, weight)
-    # 2: Learn about a specific fighter (either input a valid name or get a random one)
-    # 3: Then can see visuals for fighter (record, reach vs. leg reach) or go back to initial page
 
     statement = 'Would you like to see some distribution graphs (input ' \
                 '"Distribution"),\n see info for a specific fighter (input valid ' \
@@ -598,6 +554,7 @@ def interactive_part():
                     'name)\n or leave the program (input "Exit")?'
         user = input(statement)
     print('Thanks for using me!')
+
     pass
 
 interactive_part()
