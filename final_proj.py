@@ -534,6 +534,15 @@ def interactive_part():
 
     dicc = utilize_db()
 
+    if dicc == {}:
+        no_cache = 'Hold up, need to scrape stuff. Buckle up for this long haul.'
+        print(no_cache)
+        dicc = scrape_shit()
+        populate_db()
+    else:
+        theres_cache = 'You\'re in luck. The cache has already been filled'
+        print(theres_cache)
+
     while user != 'Exit':
         if user == 'Distribution':
             new_statement = 'Input "age" if you want to see distribution of age among fighters.\n '
