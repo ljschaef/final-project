@@ -453,7 +453,9 @@ def make_distribution(dicc, command):
                     x=['20-25', '26-30', '31-35', '36-40', '41-44', 'N/A'],
                     y=[age1, age2, age3, age4, age5, age6]
         )]
-        py.plot(age_data, filename='Age-Range-of-Fighters')
+        layout = go.Layout(title='Distribution of Fighters Age')
+        fig = go.Figure(data=age_data, layout=layout)
+        py.plot(fig, filename='Age-Range-of-Fighters')
 
     elif command == 'weight':
         weight_data = [go.Bar(
@@ -462,14 +464,18 @@ def make_distribution(dicc, command):
                         y=[weight1, weight2, weight3, weight4, weight5, weight6,
                            weight7, weight8, weight9, weight10]
         )]
-        py.plot(weight_data, filename='Weight-Range-of-Fighters')
+        layout = go.Layout(title='Distribution of Fighters Weight')
+        fig = go.Figure(data=weight_data, layout=layout)
+        py.plot(fig, filename='Weight-Range-of-Fighters')
 
     elif command == 'reach':
         reach_data = [go.Bar(
                         x=['60-65', '66-70', '71-75', '76-80', '81-84', 'N/A'],
                         y=[reach1, reach2, reach3, reach4, reach5, reach6]
         )]
-        py.plot(reach_data, filename='Reach-Range-of-Fighters')
+        layout = go.Layout(title='Distribution of Fighters Reach')
+        fig = go.Figure(data=reach_data, layout=layout)
+        py.plot(fig, filename='Reach-Range-of-Fighters')
     else:
         print('That was not a valid command.')
 
@@ -516,7 +522,10 @@ def make_individual(dicc, name):
         labels = ['Wins', 'Losses', 'Draws']
         values = [wins, losses, draws]
         trace = go.Pie(labels=labels, values=values, hoverinfo='label+percent', textinfo='value')
-        py.plot([trace], filename='Record')
+        fuck = 'Record of Fighter You Input'
+        layout = go.Layout(title=fuck)
+        fig = go.Figure(data=[trace], layout=layout)
+        py.plot(fig, filename='Record')
 
     else:
         statement = 'No graph can be made because this fighter\'s record isn\'t ' \
