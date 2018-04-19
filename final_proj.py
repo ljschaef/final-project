@@ -481,7 +481,10 @@ def make_distribution(dicc, command):
 def make_individual(dicc, name):
 
     # this will make individual graphs
-    fighter = dicc[name]
+    fighter = dicc.get(name)
+    if fighter is None:
+        you_messed_up = 'C\'mon, you were told to input a valid name'
+        return you_messed_up
     record = fighter.record
 
     wins = 0
@@ -520,7 +523,9 @@ def make_individual(dicc, name):
                     'available'
         print(statement)
 
-    pass
+    gucci = 'Well, that\'s all folk(s)'
+
+    return gucci
 
 # dicc = utilize_db()
 # make_individual(dicc, 'Jose Aldo')
@@ -535,7 +540,7 @@ def interactive_part():
     dicc = utilize_db()
 
     if dicc == {}:
-        no_cache = 'Hold up, need to scrape stuff. Buckle up for this long haul.'
+        no_cache = 'Hold up, need to scrape stuff. Buckle up for this long ride.'
         print(no_cache)
         dicc = scrape_shit()
         populate_db()
@@ -556,7 +561,8 @@ def interactive_part():
             break
 
         else:
-            make_individual(dicc, user)
+            thing = make_individual(dicc, user)
+            print(thing)
 
         statement = 'Would you like to see some distribution graphs (input ' \
                     '"Distribution"),\n see info for a specific fighter (input valid ' \
