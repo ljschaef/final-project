@@ -8,6 +8,7 @@ import plotly.plotly as py
 import plotly.graph_objs as go
 import json
 import csv
+import random
 
 DBNAME = 'final_project.db'
 # INFO : Name, Fight Name, Age, Height, Weight, Record, Reach, Leg Reach
@@ -500,12 +501,14 @@ def make_distribution(dicc, command):
         )]
         py.plot(weight_data, filename='Weight-Range-of-Fighters')
 
-    else:
+    elif command == 'reach':
         reach_data = [go.Bar(
                         x=['60-65', '66-70', '71-75', '76-80', '81-84', 'N/A'],
                         y=[reach1, reach2, reach3, reach4, reach5, reach6]
         )]
         py.plot(reach_data, filename='Reach-Range-of-Fighters')
+    else:
+        print('That was not a valid command.')
 
     pass
 
@@ -558,15 +561,10 @@ def make_individual(dicc, name):
 
     pass
 
-dicc = utilize_db()
-make_individual(dicc, 'Jose Aldo')
+# dicc = utilize_db()
+# make_individual(dicc, 'Jose Aldo')
 
 def interactive_part():
-
-    # Lets you get info about fighter
-    # Maybe make a function that creates and returns a dict of fighters with the
-    # index being their name and the other being the instance
-    # Function would utilize cache to make instances n shit
 
     # 3 things here
     # 1: See some distribution graphs (height, reach, weight)
@@ -574,18 +572,32 @@ def interactive_part():
     # 3: Then can see visuals for fighter (record, reach vs. leg reach) or go back to initial page
 
     statement = 'Would you like to see some distribution graphs (input ' \
-                '"Distribution"), see info for a specific fighter (input valid ' \
-                'name), or see info for a random fighter (input "Rando")?'
+                '"Distribution"),\n see info for a specific fighter (input valid ' \
+                'name)\n or leave the program (input "Exit")?'
     user = input(statement)
 
-    if user == 'Distribution':
+    dicc = utilize_db()
 
-        pass
+    while user != 'Exit':
+        if user == 'Distribution':
+            new_statement = 'Input "age" if you want to see distribution of age among fighters.\n '
+            new_statement += 'Input "weight" if you want to see distribution of weight among fighters.\n '
+            new_statement += 'Input "reach" if you want to see distribution of  among fighters.'
+            stuff = input(new_statement)
+            make_distribution(dicc, stuff)
 
-    elif user == 'Rando':
+        elif user == 'Exit':
+            print('Thanks for using me!')
+            break
 
-        pass
+        else:
+            make_individual(dicc, user)
 
-    else:
+        statement = 'Would you like to see some distribution graphs (input ' \
+                    '"Distribution"),\n see info for a specific fighter (input valid ' \
+                    'name)\n or leave the program (input "Exit")?'
+        user = input(statement)
+    print('Thanks for using me!')
+    pass
 
-        pass
+interactive_part()
