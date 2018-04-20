@@ -532,7 +532,7 @@ def make_individual(dicc, name):
                     'available'
         print(statement)
 
-    gucci = 'Well, that\'s all folk(s)'
+    gucci = 'Well, that\'s your graph'
 
     return gucci
 
