@@ -580,7 +580,7 @@ def interactive_part():
     print('Thanks for using me!')
 
     pass
-
-interactive_part()
+if __name__ == '__main__':
+    interactive_part()
 
 # NEED TO MAKE TESTS FUCK ME

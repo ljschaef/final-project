@@ -9,7 +9,7 @@ class TestClassBuilder(unittest.TestCase):
 
     # Now have function definitions in here of random tests
 
-    def fuck_testing(self):
+    def test_sucks_ass(self):
 
         fighter = Fighter(name='Lucas Schaefer', fight_name='Schaefdaddy', age=20,
                           height='6\'4"', weight=185, record='2-5-0', reach=76,
